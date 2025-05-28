@@ -576,7 +576,10 @@
     (let ((open-options (alexandria:remove-from-plist open-options :reader)))
       (with-gensyms (stream)
         (once-only (path reader)
-          `(when-let ((,stream (open ,path :direction :input ,@open-options)))
+          `(when-let ((,stream
+                       (if (eq ,path *standard-input*)
+                           *standard-input*
+                           (open ,path :direction :input ,@open-options))))
              (unwind-protect
                  (do ((,symbol
                        (funcall ,reader ,stream nil ',eof)
