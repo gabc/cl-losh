@@ -83,6 +83,10 @@
       ((eql head :db) (destructuring-bind (bindings expr . forms) forms
                         `(destructuring-bind ,bindings ,expr
                            (scratch% ,@forms))))
+      ((eql head :if) (destructuring-bind (expr then . forms) forms
+                        `(if ,expr
+                             ,then
+                             (scratch% ,@forms))))
       ((symbolp head) (destructuring-bind (expr . forms) forms
                         `(let ((,head ,expr))
                            (scratch% ,@forms))))
@@ -113,5 +117,6 @@
   "
   ;; Similar to `bb` described here:
   ;; https://blog.rongarret.info/2023/01/lisping-at-jpl-revisited.html
+  ;; Found here https://github.com/rongarret/ergolib/blob/master/core/binding-block.lisp
   `(block nil (scratch% ,@forms)))
 
